@@ -739,5 +739,25 @@ chart.js/dist/chart.js:
     /* 4. Initialize the widget */
     NoorvestFeeCalculator.render('fee-calculator');
   </script>
+
+<script>
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight || document.body.scrollHeight;
+    window.parent.postMessage(
+      { type: "calculatorHeight", height: height },
+      "*"
+    );
+  }
+
+  window.addEventListener("load", sendHeight);
+  window.addEventListener("resize", sendHeight);
+
+  const observer = new ResizeObserver(() => {
+    sendHeight();
+  });
+  observer.observe(document.body);
+</script>
+
+  
 </body>
 </html>
