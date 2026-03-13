@@ -740,40 +740,7 @@ chart.js/dist/chart.js:
     NoorvestFeeCalculator.render('fee-calculator');
   </script>
 
-<script>
-  let lastHeight = 0;
 
-  function sendHeight() {
-    const newHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight
-    );
-
-    if (Math.abs(newHeight - lastHeight) > 5) {
-      lastHeight = newHeight;
-      window.parent.postMessage(
-        { type: "calculatorHeight", height: newHeight },
-        "*"
-      );
-    }
-  }
-
-  window.addEventListener("load", () => {
-    setTimeout(sendHeight, 300);
-  });
-
-  window.addEventListener("resize", () => {
-    setTimeout(sendHeight, 200);
-  });
-
-  const observer = new ResizeObserver(() => {
-    setTimeout(sendHeight, 100);
-  });
-
-  observer.observe(document.body);
-</script>
 
   
 </body>
