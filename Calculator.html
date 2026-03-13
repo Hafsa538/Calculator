@@ -741,20 +741,37 @@ chart.js/dist/chart.js:
   </script>
 
 <script>
+  let lastHeight = 0;
+
   function sendHeight() {
-    const height = document.documentElement.scrollHeight || document.body.scrollHeight;
-    window.parent.postMessage(
-      { type: "calculatorHeight", height: height },
-      "*"
+    const newHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
     );
+
+    if (Math.abs(newHeight - lastHeight) > 5) {
+      lastHeight = newHeight;
+      window.parent.postMessage(
+        { type: "calculatorHeight", height: newHeight },
+        "*"
+      );
+    }
   }
 
-  window.addEventListener("load", sendHeight);
-  window.addEventListener("resize", sendHeight);
+  window.addEventListener("load", () => {
+    setTimeout(sendHeight, 300);
+  });
+
+  window.addEventListener("resize", () => {
+    setTimeout(sendHeight, 200);
+  });
 
   const observer = new ResizeObserver(() => {
-    sendHeight();
+    setTimeout(sendHeight, 100);
   });
+
   observer.observe(document.body);
 </script>
 
